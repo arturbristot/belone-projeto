@@ -1,99 +1,96 @@
 from flask import Blueprint
+from controllers import (
+    agendamento_controller as agendamento_controller,
+    cliente_controller as cliente_controller,
+    funcionario_controller as funcionario_controller,
+    servico_controller as servico_controller,
+)
 
 api = Blueprint('api', __name__)
 
-def init_app(app):
-    """Inicializa as rotas da API."""
+# Definição das rotas usando os controllers
+@api.route('/agendamentos', methods=['POST'])
+def criar_agendamento():
+    return agendamento_controller.AgendamentoController.criar_agendamento()
 
-    from .agendamento import controller as agendamento_controller
-    from .cliente import controller as cliente_controller
-    from .funcionario import controller as funcionario_controller
-    from .servico import controller as servico_controller
+@api.route('/agendamentos', methods=['GET'])
+def listar_agendamentos():
+    return agendamento_controller.AgendamentoController.listar_agendamentos()
 
-    # Rotas de Agendamento
-    @app.route('/agendamentos', methods=['POST'])
-    def criar_agendamento():
-        return agendamento_controller.criar_agendamento()
+@api.route('/agendamentos/<int:agendamento_id>', methods=['GET'])
+def obter_agendamento(agendamento_id):
+    return agendamento_controller.AgendamentoController.obter_agendamento(agendamento_id)
 
-    @app.route('/agendamentos', methods=['GET'])
-    def listar_agendamentos():
-        return agendamento_controller.listar_agendamentos()
+@api.route('/agendamentos/<int:agendamento_id>', methods=['PUT'])
+def atualizar_agendamento(agendamento_id):
+    return agendamento_controller.AgendamentoController.atualizar_agendamento(agendamento_id)
 
-    @app.route('/agendamentos/<int:agendamento_id>', methods=['GET'])
-    def obter_agendamento(agendamento_id):
-        return agendamento_controller.obter_agendamento(agendamento_id)
+@api.route('/agendamentos/<int:agendamento_id>', methods=['DELETE'])
+def deletar_agendamento(agendamento_id):
+    return agendamento_controller.AgendamentoController.deletar_agendamento(agendamento_id)
 
-    @app.route('/agendamentos/<int:agendamento_id>', methods=['PUT'])
-    def atualizar_agendamento(agendamento_id):
-        return agendamento_controller.atualizar_agendamento(agendamento_id)
+# ... (Rotas para Cliente, Funcionário e Serviço seguindo o mesmo padrão)
+@api.route('/clientes', methods=['POST'])
+def criar_cliente():
+    return cliente_controller.ClienteController.criar_cliente()
 
-    @app.route('/agendamentos/<int:agendamento_id>', methods=['DELETE'])
-    def deletar_agendamento(agendamento_id):
-        return agendamento_controller.deletar_agendamento(agendamento_id)
+@api.route('/clientes', methods=['GET'])
+def listar_cliente():
+    return cliente_controller.ClienteController.listar_clientes()
 
-    # Rotas de Cliente
-    @app.route('/clientes', methods=['POST'])
-    def criar_cliente():
-        return cliente_controller.criar_cliente()
+@api.route('/clientes/<int:cliente_id>', methods=['GET'])
+def obter_cliente(cliente_id):
+    return cliente_controller.ClienteController.obter_cliente(cliente_id)
 
-    @app.route('/clientes', methods=['GET'])
-    def listar_clientes():
-        return cliente_controller.listar_clientes()
+@api.route('/clientes/<int:cliente_id>', methods=['PUT'])
+def atualizar_cliente(agendamento_id):
+    return cliente_controller.ClienteController.atualizar_cliente(agendamento_id)
 
-    @app.route('/clientes/<int:cliente_id>', methods=['GET'])
-    def obter_cliente(cliente_id):
-        return cliente_controller.obter_cliente(cliente_id)
+@api.route('/clientes/<int:cliente_id>', methods=['DELETE'])
+def deletar_cliente(agendamento_id):
+    return cliente_controller.ClienteController.deletar_cliente(agendamento_id)
 
-    @app.route('/clientes/<int:cliente_id>', methods=['PUT'])
-    def atualizar_cliente(cliente_id):
-        return cliente_controller.atualizar_cliente(cliente_id)
+# ... (Outras rotas para Cliente)
 
-    @app.route('/clientes/<int:cliente_id>', methods=['DELETE'])
-    def deletar_cliente(cliente_id):
-        return cliente_controller.deletar_cliente(cliente_id)
+@api.route('/funcionarios', methods=['POST'])
+def criar_funcionario():
+    return funcionario_controller.FuncionarioController.criar_funcionario()
 
-    # Rotas de Funcionário
-    @app.route('/funcionarios', methods=['POST'])
-    def criar_funcionario():
-        return funcionario_controller.criar_funcionario()
+@api.route('/funcionarios', methods=['GET'])
+def listar_funcionario():
+    return funcionario_controller.FuncionarioController.listar_funcionarios()
 
-    @app.route('/funcionarios', methods=['GET'])
-    def listar_funcionarios():
-        return funcionario_controller.listar_funcionarios()
+@api.route('/funcionarios/<int:funcionario_id>', methods=['GET'])
+def obter_funcionario(funcionario_id):
+    return funcionario_controller.FuncionarioController.obter_funcionario(funcionario_id)
 
-    @app.route('/funcionarios/<int:funcionario_id>', methods=['GET'])
-    def obter_funcionario(funcionario_id):
-        return funcionario_controller.obter_funcionario(funcionario_id)
+@api.route('/funcionarios/<int:funcionario_id>', methods=['PUT'])
+def atualizar_funcionario(funcionario_id):
+    return funcionario_controller.FuncionarioController.atualizar_funcionario(funcionario_id)
 
-    @app.route('/funcionarios/<int:funcionario_id>', methods=['PUT'])
-    def atualizar_funcionario(funcionario_id):
-        return funcionario_controller.atualizar_funcionario(funcionario_id)
+@api.route('/funcionarios/<int:funcionario_id>', methods=['DELETE'])
+def deletar_funcionario(funcionario_id):
+    return funcionario_controller.FuncionarioController.deletar_funcionario(funcionario_id)
 
-    @app.route('/funcionarios/<int:funcionario_id>', methods=['DELETE'])
-    def deletar_funcionario(funcionario_id):
-        return funcionario_controller.deletar_funcionario(funcionario_id)
 
-    # Rotas de Serviço
-    @app.route('/servicos', methods=['POST'])
-    def criar_servico():
-        return servico_controller.criar_servico()
+# ... (Outras rotas para Funcionário)
 
-    @app.route('/servicos', methods=['GET'])
-    def listar_servicos():
-        return servico_controller.listar_servicos()
+@api.route('/servicos', methods=['POST'])
+def criar_servico():
+    return servico_controller.ServicoController.criar_servico()
 
-    @app.route('/servicos/<int:servico_id>', methods=['GET'])
-    def obter_servico(servico_id):
-        return servico_controller.obter_servico(servico_id)
+@api.route('/servicos', methods=['GET'])
+def listar_servico():
+    return servico_controller.ServicoController.listar_servicos()
 
-    @app.route('/servicos/<int:servico_id>', methods=['PUT'])
-    def atualizar_servico(servico_id):
-        return servico_controller.atualizar_servico(servico_id)
+@api.route('/servicos/<int:servico_id>', methods=['GET'])
+def obter_servico(servico_id):
+    return servico_controller.ServicoController.obter_servico(servico_id)
 
-    @app.route('/servicos/<int:servico_id>', methods=['DELETE'])
-    def deletar_servico(servico_id):
-        return servico_controller.deletar_servico(servico_id)
-    
-    @app.route('/teste')
-    def teste():
-        return "Olá, esta é uma rota de teste!", 200
+@api.route('/servicos/<int:servico_id>', methods=['PUT'])
+def atualizar_servico(servico_id):
+    return servico_controller.ServicoController.atualizar_servico(servico_id)
+
+@api.route('/servicos/<int:servico_id>', methods=['DELETE'])
+def deletar_servico(servico_id):
+    return servico_controller.ServicoController.deletar_servico(servico_id)

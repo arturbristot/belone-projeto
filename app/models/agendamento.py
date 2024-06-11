@@ -1,4 +1,4 @@
-from ..database import db
+from database import db
 
 class Agendamento(db.Model):
     __tablename__ = 'agendamentos'
