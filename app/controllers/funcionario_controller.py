@@ -1,4 +1,3 @@
-# app/controllers/funcionario_controller.py
 from flask import jsonify, request
 from ..models import Funcionario
 from ..database import db

@@ -1,4 +1,3 @@
-# app/controllers/cliente_controller.py
 from flask import jsonify, request
 from ..models import Cliente
 from ..database import db

@@ -1,4 +1,3 @@
-# app/routes/__init__.py
 from flask import Blueprint
 
 api = Blueprint('api', __name__)
@@ -10,9 +9,6 @@ def init_app(app):
     from .cliente import controller as cliente_controller
     from .funcionario import controller as funcionario_controller
     from .servico import controller as servico_controller
-
-
-    
 
     # Rotas de Agendamento
     @app.route('/agendamentos', methods=['POST'])

@@ -1,4 +1,3 @@
-# app/controllers/servico_controller.py
 from flask import jsonify, request
 from ..models import Servico
 from ..database import db
