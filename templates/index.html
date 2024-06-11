@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Ta funcionando meu!</h1>
+</body>
+
+<script>
+    async function logMovies(){
+        const response = await fetch('http://localhost:3000/clientes');
+        const data = await response.json();
+
+        var paragrafos = data.clientes.map(cliente => {
+            return `<p>${cliente.nome}</p>`;
+        });
+        document.body.innerHTML = paragrafos.join('');
+    }
+
+    logMovies();
+</script>
+
+<style>
+    body {
+        background-color: black;
+    }
+    h1{
+        color:white;
+    }
+</style>
+</html>
