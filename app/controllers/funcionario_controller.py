@@ -3,7 +3,7 @@ from models import Funcionario
 from database import db
 
 class FuncionarioController:
-    @staticmethod
+    
     def criar_funcionario():
         data = request.get_json()
         nome = data.get('nome')
@@ -27,20 +27,20 @@ class FuncionarioController:
 
         return jsonify({'message': 'Funcionário criado com sucesso'}), 201
 
-    @staticmethod
+
     def listar_funcionarios():
         funcionarios = Funcionario.query.all()
         funcionarios_json = [funcionario.to_json() for funcionario in funcionarios]
         return jsonify(funcionarios_json), 200
 
-    @staticmethod
+
     def obter_funcionario(funcionario_id):
         funcionario = Funcionario.query.get(funcionario_id)
         if not funcionario:
             return jsonify({'error': 'Funcionário não encontrado'}), 404
         return jsonify(funcionario.to_json()), 200
 
-    @staticmethod
+
     def atualizar_funcionario(funcionario_id):
         funcionario = Funcionario.query.get(funcionario_id)
         if not funcionario:
@@ -67,7 +67,7 @@ class FuncionarioController:
         db.session.commit()
         return jsonify({'message': 'Funcionário atualizado com sucesso'}), 200
 
-    @staticmethod
+
     def deletar_funcionario(funcionario_id):
         funcionario = Funcionario.query.get(funcionario_id)
         if not funcionario:

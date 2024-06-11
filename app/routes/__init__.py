@@ -8,7 +8,7 @@ from controllers import (
 
 api = Blueprint('api', __name__)
 
-# Definição das rotas usando os controllers
+#agendamentos
 @api.route('/agendamentos', methods=['POST'])
 def criar_agendamento():
     return agendamento_controller.AgendamentoController.criar_agendamento()
@@ -29,7 +29,7 @@ def atualizar_agendamento(agendamento_id):
 def deletar_agendamento(agendamento_id):
     return agendamento_controller.AgendamentoController.deletar_agendamento(agendamento_id)
 
-# ... (Rotas para Cliente, Funcionário e Serviço seguindo o mesmo padrão)
+#clientes
 @api.route('/clientes', methods=['POST'])
 def criar_cliente():
     return cliente_controller.ClienteController.criar_cliente()
@@ -50,8 +50,7 @@ def atualizar_cliente(agendamento_id):
 def deletar_cliente(agendamento_id):
     return cliente_controller.ClienteController.deletar_cliente(agendamento_id)
 
-# ... (Outras rotas para Cliente)
-
+#servicos
 @api.route('/funcionarios', methods=['POST'])
 def criar_funcionario():
     return funcionario_controller.FuncionarioController.criar_funcionario()
@@ -72,9 +71,7 @@ def atualizar_funcionario(funcionario_id):
 def deletar_funcionario(funcionario_id):
     return funcionario_controller.FuncionarioController.deletar_funcionario(funcionario_id)
 
-
-# ... (Outras rotas para Funcionário)
-
+#servicos
 @api.route('/servicos', methods=['POST'])
 def criar_servico():
     return servico_controller.ServicoController.criar_servico()

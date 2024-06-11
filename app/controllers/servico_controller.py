@@ -3,7 +3,7 @@ from models import Servico
 from database import db
 
 class ServicoController:
-    @staticmethod
+
     def criar_servico():
         data = request.get_json()
         nome = data.get('nome')
@@ -20,20 +20,20 @@ class ServicoController:
 
         return jsonify({'message': 'Serviço criado com sucesso'}), 201
 
-    @staticmethod
+
     def listar_servicos():
         servicos = Servico.query.all()
         servicos_json = [servico.to_json() for servico in servicos]
         return jsonify(servicos_json), 200
 
-    @staticmethod
+
     def obter_servico(servico_id):
         servico = Servico.query.get(servico_id)
         if not servico:
             return jsonify({'error': 'Serviço não encontrado'}), 404
         return jsonify(servico.to_json()), 200
 
-    @staticmethod
+
     def atualizar_servico(servico_id):
         servico = Servico.query.get(servico_id)
         if not servico:
@@ -57,7 +57,7 @@ class ServicoController:
         db.session.commit()
         return jsonify({'message': 'Serviço atualizado com sucesso'}), 200
 
-    @staticmethod
+
     def deletar_servico(servico_id):
         servico = Servico.query.get(servico_id)
         if not servico:

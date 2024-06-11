@@ -3,7 +3,7 @@ from models import Agendamento, Cliente, Funcionario, Servico
 from database import db
 
 class AgendamentoController:
-    @staticmethod
+    
     def criar_agendamento():
         data = request.get_json()
         cliente_id = data.get('cliente_id')
@@ -32,20 +32,20 @@ class AgendamentoController:
 
         return jsonify({'message': 'Agendamento criado com sucesso'}), 201
 
-    @staticmethod
+    
     def listar_agendamentos():
         agendamentos = Agendamento.query.all()
         agendamentos_json = [agendamento.to_json() for agendamento in agendamentos]
         return jsonify(agendamentos_json), 200
 
-    @staticmethod
+    
     def obter_agendamento(agendamento_id):
         agendamento = Agendamento.query.get(agendamento_id)
         if not agendamento:
             return jsonify({'error': 'Agendamento não encontrado'}), 404
         return jsonify(agendamento.to_json()), 200
 
-    @staticmethod
+    
     def atualizar_agendamento(agendamento_id):
         agendamento = Agendamento.query.get(agendamento_id)
         if not agendamento:
@@ -81,7 +81,7 @@ class AgendamentoController:
         db.session.commit()
         return jsonify({'message': 'Agendamento atualizado com sucesso'}), 200
 
-    @staticmethod
+    
     def deletar_agendamento(agendamento_id):
         agendamento = Agendamento.query.get(agendamento_id)
         if not agendamento:

@@ -3,7 +3,6 @@ from models import Cliente
 from database import db
 
 class ClienteController:
-    @staticmethod
     def criar_cliente():
         data = request.get_json()
         nome = data.get('nome')
@@ -19,20 +18,17 @@ class ClienteController:
 
         return jsonify({'message': 'Cliente criado com sucesso'}), 201
 
-    @staticmethod
     def listar_clientes():
         clientes = Cliente.query.all()
         clientes_json = [cliente.to_json() for cliente in clientes]
         return jsonify(clientes_json), 200
 
-    @staticmethod
     def obter_cliente(cliente_id):
         cliente = Cliente.query.get(cliente_id)
         if not cliente:
             return jsonify({'error': 'Cliente não encontrado'}), 404
         return jsonify(cliente.to_json()), 200
 
-    @staticmethod
     def atualizar_cliente(cliente_id):
         cliente = Cliente.query.get(cliente_id)
         if not cliente:
@@ -53,7 +49,6 @@ class ClienteController:
         db.session.commit()
         return jsonify({'message': 'Cliente atualizado com sucesso'}), 200
 
-    @staticmethod
     def deletar_cliente(cliente_id):
         cliente = Cliente.query.get(cliente_id)
         if not cliente:
