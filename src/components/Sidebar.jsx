@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './css/Sidebar.css';
 
 
-const Sidebar = ({ isOpen, toggleSidebar }) => {
+const Sidebar = ({ isOpen}) => {
   return (
     <div className={`sidebar-container ${!isOpen ? 'closed' : ''}`}>
       <ul className="sidebar-nav">
@@ -22,7 +22,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         <li className="sidebar-nav-item">
           <Link to="/Serviços">Serviços</Link>
         </li>
-        {/* Adicione mais itens de navegação aqui */}
       </ul>
     </div>
   );
