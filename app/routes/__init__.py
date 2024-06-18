@@ -43,12 +43,12 @@ def obter_cliente(cliente_id):
     return cliente_controller.ClienteController.obter_cliente(cliente_id)
 
 @api.route('/clientes/<int:cliente_id>', methods=['PUT'])
-def atualizar_cliente(agendamento_id):
-    return cliente_controller.ClienteController.atualizar_cliente(agendamento_id)
+def atualizar_cliente(cliente_id):
+    return cliente_controller.ClienteController.atualizar_cliente(cliente_id)
 
 @api.route('/clientes/<int:cliente_id>', methods=['DELETE'])
-def deletar_cliente(agendamento_id):
-    return cliente_controller.ClienteController.deletar_cliente(agendamento_id)
+def deletar_cliente(cliente_id):
+    return cliente_controller.ClienteController.deletar_cliente(cliente_id)
 
 #servicos
 @api.route('/funcionarios', methods=['POST'])
