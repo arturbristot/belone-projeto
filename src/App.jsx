@@ -16,8 +16,7 @@ function App() {
         <Sidebar />
         <div className="content">
           <Routes>
-            <Route path="/" element={<Home />} /> // Adicione a rota para a
-            página Home| se for no / = home
+            <Route path="/" element={<Home />} /> 
             <Route path="/Agendar" element={<Agendar />} />
             <Route path="/Clientes" element={<Clientes />} />
             <Route path="/Funcionarios" element={<Funcionarios />} />

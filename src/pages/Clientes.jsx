@@ -5,7 +5,6 @@ import "./css/general.css";
 
 import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
-import { func } from "prop-types";
 
 const Clientes = () => {
   const [cliente, setCliente] = useState({
@@ -14,6 +13,8 @@ const Clientes = () => {
     email: "",
   });
   const [clientes, setClientes] = useState([]);
+  const [editando, setEditando] = useState(false);
+  const [clienteIdEditando, setClienteIdEditando] = useState(null);
 
   useEffect(() => {
     const buscarClientes = async () => {
@@ -48,6 +49,38 @@ const Clientes = () => {
       );
       console.log(response.data);
       setClientes([...clientes, response.data]);
+      setCliente({ nome: "", telefone: "", email: "" });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function editarCliente() {
+    try {
+      const response = await axios.put(
+        `http://127.0.0.1:5000/clientes/${clienteIdEditando}`,
+        {
+          nome: cliente.nome,
+          telefone: cliente.telefone,
+          email: cliente.email,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setClientes(
+          clientes.map((cli) =>
+            cli.id === clienteIdEditando ? response.data : cli
+          )
+        );
+        setCliente({ nome: "", telefone: "", email: "" });
+        setEditando(false);
+        setClienteIdEditando(null);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -67,13 +100,19 @@ const Clientes = () => {
     }
   }
 
+  function iniciarEdicao(cliente) {
+    setCliente(cliente);
+    setEditando(true);
+    setClienteIdEditando(cliente.id);
+  }
+
   return (
     <div className="container">
       <div className="cadastro">
-        <h2>Cadastro de Clientes</h2>
+        <h2>{editando ? "Editar Cliente" : "Cadastro de Clientes"}</h2>
         <div className="input-group">
           <div className="classe">
-            <label htmlFor="">Nome:</label>
+            <label htmlFor="nome">Nome:</label>
           </div>
           <input
             className="inp"
@@ -87,7 +126,7 @@ const Clientes = () => {
         </div>
         <div className="input-group">
           <div className="classe">
-            <label htmlFor="">Telefone:</label>
+            <label htmlFor="telefone">Telefone:</label>
           </div>
           <input
             className="inp"
@@ -103,9 +142,8 @@ const Clientes = () => {
         </div>
         <div className="input-group">
           <div className="classe">
-            <label htmlFor="">E-mail:</label>
+            <label htmlFor="email">E-mail:</label>
           </div>
-
           <input
             className="inp"
             type="email"
@@ -117,16 +155,17 @@ const Clientes = () => {
           />
         </div>
 
-        <button className="buttonAdd" onClick={inserirCliente}>
-          Adicionar Cliente
+        <button
+          className="buttonAdd"
+          onClick={editando ? editarCliente : inserirCliente}
+        >
+          {editando ? "Salvar Alterações" : "Adicionar Cliente"}
         </button>
       </div>
 
       <div className="listagem">
         <h2>Listagem de clientes</h2>
         <table className="tabela-funcionarios">
-          {" "}
-          {}
           <thead>
             <tr>
               <th>id</th>
@@ -149,8 +188,11 @@ const Clientes = () => {
                     onClick={() => deletarCliente(cliente.id)}
                   >
                     <MdDelete />
-                  </button>{" "}
-                  <button className="icon">
+                  </button>
+                  <button
+                    className="icon"
+                    onClick={() => iniciarEdicao(cliente)}
+                  >
                     <CiEdit />
                   </button>
                 </td>

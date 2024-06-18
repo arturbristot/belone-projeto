@@ -5,7 +5,6 @@ import "./css/general.css";
 
 import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
-import { func } from "prop-types";
 
 const Funcionarios = () => {
   const [funcionario, setFuncionario] = useState({
@@ -16,6 +15,8 @@ const Funcionarios = () => {
     salario: "",
   });
   const [funcionarios, setFuncionarios] = useState([]);
+  const [editando, setEditando] = useState(false);
+  const [funcionarioIdEditando, setFuncionarioIdEditando] = useState(null);
 
   useEffect(() => {
     const buscarFuncionarios = async () => {
@@ -28,7 +29,7 @@ const Funcionarios = () => {
     };
 
     buscarFuncionarios();
-    const intervalId = setInterval(buscarFuncionarios, 500);
+    const intervalId = setInterval(buscarFuncionarios, 1000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -51,8 +52,41 @@ const Funcionarios = () => {
         }
       );
       console.log(response.data);
-      // Após inserir, atualiza a lista:
       setFuncionarios([...funcionarios, response.data]);
+      setFuncionario({ nome: "", especialidade: "", telefone: "", email: "", salario: "" });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async function editarFuncionario() {
+    try {
+      const response = await axios.put(
+        `http://127.0.0.1:5000/funcionarios/${funcionarioIdEditando}`,
+        {
+          nome: funcionario.nome,
+          especialidade: funcionario.especialidade,
+          telefone: funcionario.telefone,
+          email: funcionario.email,
+          salario: funcionario.salario,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setFuncionarios(
+          funcionarios.map((func) =>
+            func.id === funcionarioIdEditando ? response.data : func
+          )
+        );
+        setFuncionario({ nome: "", especialidade: "", telefone: "", email: "", salario: "" });
+        setEditando(false);
+        setFuncionarioIdEditando(null);
+      }
     } catch (error) {
       console.error(error);
     }
@@ -65,22 +99,26 @@ const Funcionarios = () => {
       );
 
       if (response.status === 200) {
-        setFuncionarios(
-          funcionarios.filter((funcionario) => funcionario.id !== id)
-        );
+        setFuncionarios(funcionarios.filter((funcionario) => funcionario.id !== id));
       }
     } catch (error) {
       console.error(error);
     }
   }
 
+  function iniciarEdicao(funcionario) {
+    setFuncionario(funcionario);
+    setEditando(true);
+    setFuncionarioIdEditando(funcionario.id);
+  }
+
   return (
     <div className="container">
       <div className="cadastro">
-        <h2>Cadastro de Funcionários</h2>
+        <h2>{editando ? "Editar Funcionário" : "Cadastro de Funcionários"}</h2>
         <div className="input-group">
           <div className="classe">
-            <label htmlFor="">Nome:</label>
+            <label htmlFor="nome">Nome:</label>
           </div>
           <input
             className="inp"
@@ -88,15 +126,13 @@ const Funcionarios = () => {
             id="nome"
             name="nome"
             value={funcionario.nome}
-            onChange={(e) =>
-              setFuncionario({ ...funcionario, nome: e.target.value })
-            }
+            onChange={(e) => setFuncionario({ ...funcionario, nome: e.target.value })}
             placeholder="Nome do funcionário"
           />
         </div>
         <div className="input-group">
           <div className="classe">
-            <label htmlFor="">Especialidade:</label>
+            <label htmlFor="especialidade">Especialidade:</label>
           </div>
           <input
             className="inp"
@@ -104,15 +140,13 @@ const Funcionarios = () => {
             id="especialidade"
             name="especialidade"
             value={funcionario.especialidade}
-            onChange={(e) =>
-              setFuncionario({ ...funcionario, especialidade: e.target.value })
-            }
+            onChange={(e) => setFuncionario({ ...funcionario, especialidade: e.target.value })}
             placeholder="Especialidade"
           />
         </div>
         <div className="input-group">
           <div className="classe">
-            <label htmlFor="">Telefone:</label>
+            <label htmlFor="telefone">Telefone:</label>
           </div>
           <input
             className="inp"
@@ -120,15 +154,13 @@ const Funcionarios = () => {
             id="telefone"
             name="telefone"
             value={funcionario.telefone}
-            onChange={(e) =>
-              setFuncionario({ ...funcionario, telefone: e.target.value })
-            }
+            onChange={(e) => setFuncionario({ ...funcionario, telefone: e.target.value })}
             placeholder="Telefone"
           />
         </div>
         <div className="input-group">
           <div className="classe">
-            <label htmlFor="">E-mail:</label>
+            <label htmlFor="email">E-mail:</label>
           </div>
 
           <input
@@ -137,15 +169,13 @@ const Funcionarios = () => {
             id="email"
             name="email"
             value={funcionario.email}
-            onChange={(e) =>
-              setFuncionario({ ...funcionario, email: e.target.value })
-            }
+            onChange={(e) => setFuncionario({ ...funcionario, email: e.target.value })}
             placeholder="E-mail"
           />
         </div>
         <div className="input-group">
           <div className="classe">
-            <label htmlFor="">Salário:</label>
+            <label htmlFor="salario">Salário:</label>
           </div>
           <input
             className="inp"
@@ -153,23 +183,19 @@ const Funcionarios = () => {
             id="salario"
             name="salario"
             value={funcionario.salario}
-            onChange={(e) =>
-              setFuncionario({ ...funcionario, salario: e.target.value })
-            }
+            onChange={(e) => setFuncionario({ ...funcionario, salario: e.target.value })}
             placeholder="Salário"
           />
         </div>
 
-        <button className="buttonAdd" onClick={inserirFuncionario}>
-          Adicionar Funcionário
+        <button className="buttonAdd" onClick={editando ? editarFuncionario : inserirFuncionario}>
+          {editando ? "Salvar Alterações" : "Adicionar Funcionário"}
         </button>
       </div>
 
       <div className="listagem">
         <h2>Listagem de Funcionários</h2>
         <table className="tabela-funcionarios">
-          {" "}
-          {/* Adicione uma classe à tabela */}
           <thead>
             <tr>
               <th>id</th>
@@ -196,8 +222,11 @@ const Funcionarios = () => {
                     onClick={() => deletarFuncionario(funcionario.id)}
                   >
                     <MdDelete />
-                  </button>{" "}
-                  <button className="icon">
+                  </button>
+                  <button
+                    className="icon"
+                    onClick={() => iniciarEdicao(funcionario)}
+                  >
                     <CiEdit />
                   </button>
                 </td>
